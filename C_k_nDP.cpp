@@ -1,30 +1,30 @@
 #include <iostream>
+#define M 1000000007
 using namespace std;
-#define MOD 1000000007
-long long powerMod(long long a, long long b) {
+long long qPowMod(long long a, long long b) {
     long long rs = 1;
-    a = a % MOD;
+    a = a % M;
     while (b > 0) {
         if (b % 2 == 1) {
-            rs = (rs * a) % MOD;
+            rs = (rs * a) % M;
         }
-        a = (a * a) % MOD;
+        a = (a * a) % M;
         b /= 2;
     }
     return rs;
 }
 long long modInverse(long long a) {
-    return powerMod(a, MOD - 2);
+    return qPowMod(a, M - 2);
 }
 long long cMod(long long k, long long n) {
-    long long numerator = 1, denominator = 1;
+    long long TS = 1, MS = 1;
     for (int i = 0; i < k; i++) {
-        numerator = (numerator * (n - i)) % MOD;
+        TS = (TS * (n - i)) % M;
     }
     for (int i = 1; i <= k; i++) {
-        denominator = (denominator * i) % MOD;
+        MS = (MS * i) % M;
     }
-    long long rs = ((numerator % MOD) * modInverse(denominator)) % MOD;
+    long long rs = (TS % M * modInverse(MS)) % M;
     return rs;
 }
 int main() {
