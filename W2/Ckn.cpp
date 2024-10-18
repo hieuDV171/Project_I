@@ -6,8 +6,7 @@ void Extended_Euclid(long long a, long long b) {
     if (b == 0) {
         x = 1;
         y = 0;
-    }
-    else {
+    } else {
         Extended_Euclid(b, a % b);
         long long temp = x;
         x = y;
@@ -20,7 +19,7 @@ long long Inverse(long long a) {
 }
 long long cMod(long long k, long long n) {
     long long TS = 1, MS = 1;
-    for (int i = 0; i < k;i++) {
+    for (int i = 0; i < k; i++) {
         TS = (TS * (n - i)) % MOD;
     }
     for (int i = 1; i <= k; i++) {
