@@ -1,6 +1,8 @@
 {
     "git.ignoreLimitWarning": true,
     "files.associations": {
-        "random": "cpp"
+        "random": "cpp",
+        "iostream": "cpp",
+        "*.tcc": "cpp"
     }
 }
