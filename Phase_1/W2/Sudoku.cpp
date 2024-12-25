@@ -5,6 +5,14 @@ int markC[9][10];
 int markS[3][3][10];
 int x[9][9];
 int cnt = 0;
+void solution() {
+    for (int r = 0; r < 9; r++) {
+        for (int c = 0; c < 9; c++) {
+            cout << x[r][c] << " ";
+        }
+        cout << endl;
+    }
+}
 int check(int v, int r, int c) {
     if (markR[r][v] == 1 || markC[c][v] == 1 || markS[r / 3][c / 3][v] == 1) {
         return 0;
@@ -21,6 +29,7 @@ void Try(int r, int c) {
                 markS[r / 3][c / 3][v] = 1;
                 if (r == 8 && c == 8) {
                     cnt++;
+                    solution();
                 } else if (c < 8) {
                     Try(r, c + 1);
                 } else {
@@ -35,6 +44,7 @@ void Try(int r, int c) {
     } else {
         if (r == 8 && c == 8) {
             cnt++;
+            solution();
         } else if (c < 8) {
             Try(r, c + 1);
         } else {
@@ -66,6 +76,7 @@ int main() {
             }
         }
     }
+    cout << endl;
     Try(0, 0);
     cout << cnt << endl;
     return 0;
