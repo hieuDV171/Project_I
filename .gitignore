@@ -1,4 +1,6 @@
 *.exe
 *.csv
 *.txt
+*.dat
+*.bin
 .vscode

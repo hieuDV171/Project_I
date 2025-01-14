@@ -7,7 +7,7 @@
 
 using namespace std;
 
-vector<int> BruteForceSearch(string &text, string &pattern) {
+vector<int> BruteForceSearch(const string &text, const string &pattern) {
     int n = text.length();
     int m = pattern.length();
     vector<int> positions;
