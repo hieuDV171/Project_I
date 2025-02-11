@@ -4,3 +4,4 @@
 *.dat
 *.bin
 .vscode
+!words_alpha.txt
