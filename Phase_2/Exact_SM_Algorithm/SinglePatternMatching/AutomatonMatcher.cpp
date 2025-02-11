@@ -1,4 +1,4 @@
-#include <chrono> // Để đo hiệu năng
+#include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -51,8 +51,8 @@ void SaveDFAToFile(const unordered_map<int, unordered_map<char, int>> &dfa, cons
         outFile.write(reinterpret_cast<char *>(&transitionsSize), sizeof(transitionsSize));
 
         for (const auto &transition : stateEntry.second) {
-            outFile.write(reinterpret_cast<const char *>(&transition.first), sizeof(transition.first));   // character
-            outFile.write(reinterpret_cast<const char *>(&transition.second), sizeof(transition.second)); // next state
+            outFile.write(reinterpret_cast<const char *>(&transition.first), sizeof(transition.first));
+            outFile.write(reinterpret_cast<const char *>(&transition.second), sizeof(transition.second));
         }
     }
 
@@ -140,16 +140,16 @@ int main() {
             cout << setw(3) << ++i << ": ";
 
             if (!dfaLoaded) {
-                // Nếu chưa có DFA, tạo mới và lưu nó vào tệp
+                // If DFA does not exist, create a new one and save it to a file
                 dfa = BuildDFA(pattern);
                 SaveDFAToFile(dfa, "dfa.bin");
                 dfaLoaded = true;
             } else {
-                // Nếu DFA đã được lưu trước đó, chỉ cần tải lại
+                // If the DFA has been saved before, just reload it
                 dfa = LoadDFAFromFile("dfa.bin");
             }
 
-            // Tìm kiếm mẫu trong văn bản
+            // Search for patterns in text
             vector<int> positions = AutomatonMatcher(text, pattern);
             if (!positions.empty()) {
                 cout << "Pattern found at index: ";

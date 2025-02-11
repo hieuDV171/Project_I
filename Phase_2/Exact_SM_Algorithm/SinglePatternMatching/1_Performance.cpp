@@ -99,25 +99,35 @@ unordered_map<char, int> BuildBadCharacterTable(const string &pattern) {
 
 vector<int> BuildGoodSuffixTable(const string &pattern) {
     int m = pattern.length();
-    vector<int> goodSuffixTable(m + 1, m);
+    vector<int> shift(m + 1, 0);
+    vector<int> bpos(m + 1, 0);
 
-    vector<int> border(m + 1, 0);
-    int j = 0;
-    for (int i = m - 1; i >= 0; i--) {
-        while (j > 0 && pattern[i] != pattern[m - 1 - j]) {
-            j = border[j];
+    int i = m, j = m + 1;
+    bpos[i] = j;
+
+    while (i > 0) {
+        while (j <= m && pattern[i - 1] != pattern[j - 1]) {
+            if (shift[j] == 0) {
+                shift[j] = j - i;
+            }
+            j = bpos[j];
         }
-        if (pattern[i] == pattern[m - 1 - j]) {
-            j++;
-        }
-        border[i] = j;
+        i--;
+        j--;
+        bpos[i] = j;
     }
 
-    for (int i = 0; i < m; i++) {
-        int shift = m - border[i];
-        goodSuffixTable[shift] = shift;
+    j = bpos[0];
+    for (i = 0; i <= m; i++) {
+        if (shift[i] == 0) {
+            shift[i] = j;
+        }
+        if (i == j) {
+            j = bpos[j];
+        }
     }
-    return goodSuffixTable;
+
+    return shift;
 }
 
 vector<int> BoyerMooreSearch(const string &text, const string &pattern) {
@@ -142,12 +152,12 @@ vector<int> BoyerMooreSearch(const string &text, const string &pattern) {
 
         if (j < 0) {
             positions.push_back(i);
-            i += (i + m < n) ? goodSuffixTable[1] : 1;
+            i += (i + m < n) ? goodSuffixTable[0] : 1;
         } else {
             int badCharShift = (badCharTable.find(text[i + j]) != badCharTable.end())
                                    ? j - badCharTable[text[i + j]]
                                    : j + 1;
-            int goodSuffixShift = (j < m - 1) ? goodSuffixTable[m - j - 1] : 1;
+            int goodSuffixShift = (j < m - 1) ? goodSuffixTable[j + 1] : 1;
             i += max(badCharShift, goodSuffixShift);
         }
     }
@@ -315,7 +325,7 @@ long long measureExecutionTime(const string &text, const string &pattern,
                                vector<int> (*algorithm)(const string &, const string &)) {
     long long totalTime = 0;
 
-    for (int i = 0; i < 50; ++i) {
+    for (int i = 0; i < 10; ++i) {
         auto start = high_resolution_clock::now();
         algorithm(text, pattern);
 
@@ -323,7 +333,7 @@ long long measureExecutionTime(const string &text, const string &pattern,
         totalTime += duration_cast<microseconds>(stop - start).count();
     }
 
-    return totalTime / 50;
+    return totalTime / 10;
 }
 
 long long measureExecutionTimeWithDFA(

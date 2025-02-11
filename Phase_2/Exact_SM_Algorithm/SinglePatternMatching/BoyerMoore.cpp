@@ -1,4 +1,4 @@
-// Hiệu quả cao trên các văn bản lớn, đặc biệt nếu mẫu tương đối dài.
+// Highly efficient on large texts, especially if the pattern is relatively long.
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -9,7 +9,7 @@
 
 using namespace std;
 
-// Hàm tạo bảng "Bad Character"
+// Function to create "Bad Character" table
 unordered_map<char, int> BuildBadCharacterTable(const string &pattern) {
     unordered_map<char, int> badCharTable;
     int m = pattern.length();
@@ -19,31 +19,40 @@ unordered_map<char, int> BuildBadCharacterTable(const string &pattern) {
     return badCharTable;
 }
 
-// Hàm tạo bảng "Good Suffix"
 vector<int> BuildGoodSuffixTable(const string &pattern) {
     int m = pattern.length();
-    vector<int> goodSuffixTable(m + 1, m);
+    vector<int> shift(m + 1, 0);
+    vector<int> bpos(m + 1, 0); // border position
 
-    vector<int> border(m + 1, 0); // Lưu các đường viền (border)
-    int j = 0;
-    for (int i = m - 1; i >= 0; i--) {
-        while (j > 0 && pattern[i] != pattern[m - 1 - j]) {
-            j = border[j];
+    int i = m, j = m + 1;
+    bpos[i] = j;
+
+    while (i > 0) {
+        while (j <= m && pattern[i - 1] != pattern[j - 1]) {
+            if (shift[j] == 0) {
+                shift[j] = j - i;
+            }
+            j = bpos[j];
         }
-        if (pattern[i] == pattern[m - 1 - j]) {
-            j++;
-        }
-        border[i] = j;
+        i--;
+        j--;
+        bpos[i] = j;
     }
 
-    for (int i = 0; i < m; i++) {
-        int shift = m - border[i];
-        goodSuffixTable[shift] = shift;
+    j = bpos[0];
+    for (i = 0; i <= m; i++) {
+        if (shift[i] == 0) {
+            shift[i] = j;
+        }
+        if (i == j) {
+            j = bpos[j];
+        }
     }
-    return goodSuffixTable;
+
+    return shift;
 }
 
-// Hàm Boyer-Moore
+// Boyer-Moore function
 vector<int> BoyerMooreSearch(const string &text, const string &pattern) {
     int n = text.length();
     int m = pattern.length();
@@ -60,19 +69,18 @@ vector<int> BoyerMooreSearch(const string &text, const string &pattern) {
     while (i <= n - m) {
         int j = m - 1;
 
-        // So sánh từ phải sang trái
         while (j >= 0 && text[i + j] == pattern[j]) {
             j--;
         }
 
         if (j < 0) {
             positions.push_back(i);
-            i += (i + m < n) ? goodSuffixTable[1] : 1;
+            i += (i + m < n) ? goodSuffixTable[0] : 1;
         } else {
             int badCharShift = (badCharTable.find(text[i + j]) != badCharTable.end())
                                    ? j - badCharTable[text[i + j]]
                                    : j + 1;
-            int goodSuffixShift = (j < m - 1) ? goodSuffixTable[m - j - 1] : 1;
+            int goodSuffixShift = (j < m - 1) ? goodSuffixTable[j + 1] : 1;
             i += max(badCharShift, goodSuffixShift);
         }
     }

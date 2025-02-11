@@ -1,6 +1,4 @@
-/*
-* Trie được tối ưu cho việc tìm kiếm nhiều mẫu cùng lúc.
-*/
+// Trie are optimized for searching multiple patterns at once.
 #include <fstream>
 #include <iostream>
 #include <sstream>

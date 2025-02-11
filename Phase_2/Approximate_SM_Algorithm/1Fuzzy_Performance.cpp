@@ -146,7 +146,7 @@ vector<int> JaroWinklerSearch(const string &text, const string &pattern, int max
 long long measureExecutionTime(const string &text, const string &pattern,
                                vector<int> (*algorithm)(const string &, const string &, int)) {
     long long totalTime = 0;
-    const int numRuns = 5;
+    const int numRuns = 3;
 
     for (int i = 0; i < numRuns; ++i) {
         auto start = high_resolution_clock::now();

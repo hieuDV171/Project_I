@@ -1,4 +1,4 @@
-// Tìm kiếm 1 mẫu xuất hiện nhiều lần trong văn bản
+// Search for a pattern that appears multiple times in the text
 #include <fstream>
 #include <iomanip>
 #include <iostream>

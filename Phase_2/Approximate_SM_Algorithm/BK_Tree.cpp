@@ -177,7 +177,11 @@ int main() {
     if (!results.empty()) {
         cout << "Similar words found:" << endl;
         for (const string &result : results) {
-            cout << "  - " << result << endl;
+            cout << "  - " << result;
+            if (result.compare(query) == 0) {
+                cout << " (*)";
+            }
+            cout << endl;
         }
     } else {
         cout << "No similar words found." << endl;

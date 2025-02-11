@@ -190,7 +190,7 @@ template <typename NodeType>
 pair<long long, int> measureExecutionTime(NodeType *root, const string &text,
                                           unordered_map<string, vector<int>> (*algorithm)(NodeType *, const string &)) {
     long long totalTime = 0;
-    int num = 49;
+    int num = 9;
 
     auto start = high_resolution_clock::now();
     unordered_map<string, vector<int>> result = algorithm(root, text);
@@ -214,7 +214,7 @@ pair<long long, int> measureExecutionTime(NodeType *root, const string &text,
 
 pair<long long, int> measureExecutionTimeRabinKarp(const string &text, const vector<string> &patterns) {
     long long totalTime = 0;
-    int num = 49;
+    int num = 9;
 
     auto start = high_resolution_clock::now();
     unordered_map<string, vector<int>> result = RabinKarpSearch(text, patterns);

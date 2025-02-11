@@ -20,7 +20,7 @@ vector<int> RabinKarpSearch(const string &text, const string &pattern) {
     int h = 1;
 
     for (int i = 0; i < m - 1; i++) {
-        h = (h * d) % prime;
+        h = (h * d) % prime; // weight of first character
     }
 
     for (int i = 0; i < m; i++) {
